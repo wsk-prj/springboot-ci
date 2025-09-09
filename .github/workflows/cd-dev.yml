@@ -77,8 +77,9 @@ jobs:
             "embeds": [{
               "title": "Deployment Failed",
               "color": 16711680,
+              "content": "@everyone",
               "fields": [
                 {"name": "🔗 Detail", "value": "[[PR #${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})] ${{ github.event.pull_request.title }}\n[Action #${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})", "inline": false}
-              ]
+              ],
             }]
           }'
