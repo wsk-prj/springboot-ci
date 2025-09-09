@@ -66,12 +66,9 @@ jobs:
           -H "Content-Type: application/json" \
           -d '{
             "embeds": [{
-              "title": "✅ Integration Success",
-                "description": "[#${{ github.event.number }}](${{ github.event.pull_request.html_url }}): ${{ github.event.pull_request.title }} (${{ github.base_ref }} ← ${{ github.head_ref }})",
-              "color": 65280,
-              "footer": {
-                "text": "$(date -u +%Y-%m-%d %H:%M UTC)"
-              }
+              "title": "Integration Success",
+                "description": "[#${{ github.event.number }}](${{ github.event.pull_request.html_url }}): ${{ github.event.pull_request.title }} (`${{ github.base_ref }}` ← `${{ github.head_ref }}`)",
+              "color": 65280
             }]
           }'
         
@@ -82,11 +79,8 @@ jobs:
           -H "Content-Type: application/json" \
           -d '{
             "embeds": [{
-              "title": "❌ Integration Failed",
-                "description": "[#${{ github.event.number }}](${{ github.event.pull_request.html_url }}): ${{ github.event.pull_request.title }} (${{ github.base_ref }} ← ${{ github.head_ref }})\n\n**Detail:** [View Action](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})",
-              "color": 16711680,
-              "footer": {
-                "text": "$(date -u +%Y-%m-%d %H:%M UTC)"
-              }
+              "title": "Integration Failed",
+                "description": "[#${{ github.event.number }}](${{ github.event.pull_request.html_url }}): ${{ github.event.pull_request.title }} (`${{ github.base_ref }}` ← `${{ github.head_ref }}`)\n\n**Detail:** [View Action](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})",
+              "color": 16711680
             }]
           }'
