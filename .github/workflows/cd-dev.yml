@@ -54,6 +54,7 @@ jobs:
       if: success()
       run: |
         SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+        PR_TITLE=$(echo "${{ github.event.pull_request.title }}" | sed 's/"/\\"/g' | sed 's/\\/\\\\/g')
         curl -X POST "${{ secrets.DISCORD_WEBHOOK_URL_CD }}" \
           -H "Content-Type: application/json" \
           -d '{
