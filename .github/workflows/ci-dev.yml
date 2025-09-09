@@ -66,9 +66,12 @@ jobs:
           -H "Content-Type: application/json" \
           -d '{
             "embeds": [{
-              "title": "Integration Success",
-                "description": "[#${{ github.event.number }}](${{ github.event.pull_request.html_url }}): ${{ github.event.pull_request.title }} (`${{ github.base_ref }}` ← `${{ github.head_ref }}`)",
-              "color": 65280
+              "title": "Integration Success!",
+              "color": 65280,
+              "fields": [
+                {"name": "📋 Pull Request", "value": "[PR #${{ github.event.number }}](${{ github.event.pull_request.html_url }}): ${{ github.event.pull_request.title }}", "inline": false},
+                {"name": "🌿 Branch", "value": "`${{ github.base_ref }}` ← `${{ github.head_ref }}`", "inline": false}
+              ]
             }]
           }'
         
@@ -80,7 +83,11 @@ jobs:
           -d '{
             "embeds": [{
               "title": "Integration Failed",
-                "description": "[#${{ github.event.number }}](${{ github.event.pull_request.html_url }}): ${{ github.event.pull_request.title }} (`${{ github.base_ref }}` ← `${{ github.head_ref }}`)\n\n**Detail:** [View Action](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})",
-              "color": 16711680
+              "color": 16711680,
+              "fields": [
+                {"name": "📋 Pull Request", "value": "[PR #${{ github.event.number }}](${{ github.event.pull_request.html_url }}): ${{ github.event.pull_request.title }}", "inline": false},
+                {"name": "🌿 Branch", "value": "`${{ github.base_ref }}` ← `${{ github.head_ref }}`", "inline": false},
+                {"name": "🔗 Detail", "value": "[Action #${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})", "inline": false}
+              ]
             }]
           }'
