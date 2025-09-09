@@ -66,21 +66,12 @@ jobs:
           -H "Content-Type: application/json" \
           -d '{
             "embeds": [{
-              "title": "✅ CI Pipeline Success",
-              "description": "All checks passed successfully!",
+              "title": "✅ Integration Success",
+                "description": "[#${{ github.event.number }}](${{ github.event.pull_request.html_url }}): ${{ github.event.pull_request.title }} (${{ github.base_ref }} ← ${{ github.head_ref }})",
               "color": 65280,
-              "fields": [
-                {"name": "📋 Pull Request", "value": "[#${{ github.event.number }}: ${{ github.event.pull_request.title }}](${{ github.event.pull_request.html_url }})", "inline": false},
-                {"name": "🌿 Branch", "value": "`${{ github.head_ref }}`", "inline": true},
-                {"name": "👤 Author", "value": "${{ github.event.pull_request.user.login }}", "inline": true},
-                {"name": "⏱️ Duration", "value": "<t:${{ github.run_number }}:R>", "inline": true},
-                {"name": "🔗 Workflow Run", "value": "[View Details](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})", "inline": false}
-              ],
               "footer": {
-                "text": "GitHub Actions • ${{ github.repository }}",
-                "icon_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-              },
-              "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%S.000Z)"
+                "text": "$(date -u +%Y-%m-%d %H:%M UTC)"
+              }
             }]
           }'
         
@@ -91,20 +82,11 @@ jobs:
           -H "Content-Type: application/json" \
           -d '{
             "embeds": [{
-              "title": "❌ CI Pipeline Failed",
-              "description": "One or more checks have failed!",
+              "title": "❌ Integration Failed",
+                "description": "[#${{ github.event.number }}](${{ github.event.pull_request.html_url }}): ${{ github.event.pull_request.title }} (${{ github.base_ref }} ← ${{ github.head_ref }})\n\n**Detail:** [View Action](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})",
               "color": 16711680,
-              "fields": [
-                {"name": "📋 Pull Request", "value": "[#${{ github.event.number }}: ${{ github.event.pull_request.title }}](${{ github.event.pull_request.html_url }})", "inline": false},
-                {"name": "🌿 Branch", "value": "`${{ github.head_ref }}`", "inline": true},
-                {"name": "👤 Author", "value": "${{ github.event.pull_request.user.login }}", "inline": true},
-                {"name": "⏱️ Duration", "value": "<t:${{ github.run_number }}:R>", "inline": true},
-                {"name": "🔗 Workflow Run", "value": "[View Details](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})", "inline": false}
-              ],
               "footer": {
-                "text": "GitHub Actions • ${{ github.repository }}",
-                "icon_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-              },
-              "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%S.000Z)"
+                "text": "$(date -u +%Y-%m-%d %H:%M UTC)"
+              }
             }]
           }'
