@@ -66,7 +66,7 @@ jobs:
           -H "Content-Type: application/json" \
           -d '{
             "embeds": [{
-              "title": "Integration Success!",
+              "title": "Integration Check Success!",
               "description": "> [PR #${{ github.event.number }}](${{ github.event.pull_request.html_url }}) - ${{ github.event.pull_request.title }}(`${{ github.base_ref }}` ← `${{ github.head_ref }}`)",
               "color": 65280
             }]
@@ -79,7 +79,7 @@ jobs:
           -H "Content-Type: application/json" \
           -d '{
             "embeds": [{
-              "title": "Integration Failed",
+              "title": "Integration Check Failed",
               "description": "> [PR #${{ github.event.number }}](${{ github.event.pull_request.html_url }}) - ${{ github.event.pull_request.title }}(`${{ github.base_ref }}` ← `${{ github.head_ref }}`)",
               "color": 16711680,
               "fields": [
