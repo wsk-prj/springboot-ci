@@ -58,6 +58,7 @@ jobs:
         curl -X POST "${{ secrets.DISCORD_WEBHOOK_URL_CD }}" \
           -H "Content-Type: application/json" \
           -d '{
+            "content": "[알림] 배포 성공!",
             "embeds": [{
               "title": "Deployment Success!",
               "description": "> Current HEAD is [#'$SHORT_SHA'](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) (`${{ github.base_ref }}`)",
@@ -74,7 +75,7 @@ jobs:
         curl -X POST "${{ secrets.DISCORD_WEBHOOK_URL_CD }}" \
           -H "Content-Type: application/json" \
           -d '{
-            "content": "@everyone",
+            "content": "[알림] 배포 실패 - @everyone",
             "embeds": [{
               "title": "Deployment Failed",
               "color": 16711680,
