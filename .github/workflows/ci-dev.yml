@@ -66,12 +66,21 @@ jobs:
           -H "Content-Type: application/json" \
           -d '{
             "embeds": [{
-              "title": "✅ CI 성공",
-              "description": "**PR #${{ github.event.number }}**: ${{ github.event.pull_request.title }}",
+              "title": "✅ CI Pipeline Success",
+              "description": "All checks passed successfully!",
               "color": 65280,
               "fields": [
-                {"name": "🔗 PR 링크", "value": "[PR #${{ github.event.number }}](${{ github.event.pull_request.html_url }})", "inline": false}
-              ]
+                {"name": "📋 Pull Request", "value": "[#${{ github.event.number }}: ${{ github.event.pull_request.title }}](${{ github.event.pull_request.html_url }})", "inline": false},
+                {"name": "🌿 Branch", "value": "`${{ github.head_ref }}`", "inline": true},
+                {"name": "👤 Author", "value": "${{ github.event.pull_request.user.login }}", "inline": true},
+                {"name": "⏱️ Duration", "value": "<t:${{ github.run_number }}:R>", "inline": true},
+                {"name": "🔗 Workflow Run", "value": "[View Details](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})", "inline": false}
+              ],
+              "footer": {
+                "text": "GitHub Actions • ${{ github.repository }}",
+                "icon_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+              },
+              "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%S.000Z)"
             }]
           }'
         
@@ -82,11 +91,20 @@ jobs:
           -H "Content-Type: application/json" \
           -d '{
             "embeds": [{
-              "title": "❌ CI 실패",
-              "description": "**PR #${{ github.event.number }}**: ${{ github.event.pull_request.title }}",
+              "title": "❌ CI Pipeline Failed",
+              "description": "One or more checks have failed!",
               "color": 16711680,
               "fields": [
-                {"name": "🔗 PR 링크", "value": "[PR #${{ github.event.number }}](${{ github.event.pull_request.html_url }})", "inline": false}
-              ]
+                {"name": "📋 Pull Request", "value": "[#${{ github.event.number }}: ${{ github.event.pull_request.title }}](${{ github.event.pull_request.html_url }})", "inline": false},
+                {"name": "🌿 Branch", "value": "`${{ github.head_ref }}`", "inline": true},
+                {"name": "👤 Author", "value": "${{ github.event.pull_request.user.login }}", "inline": true},
+                {"name": "⏱️ Duration", "value": "<t:${{ github.run_number }}:R>", "inline": true},
+                {"name": "🔗 Workflow Run", "value": "[View Details](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})", "inline": false}
+              ],
+              "footer": {
+                "text": "GitHub Actions • ${{ github.repository }}",
+                "icon_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+              },
+              "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%S.000Z)"
             }]
           }'
