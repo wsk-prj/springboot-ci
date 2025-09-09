@@ -1,7 +1,8 @@
 name: CD - Deploy Development
 
 on:
-  push:
+  pull_request:
+    types: [closed]
     branches: [ develop ]
 
 env:
@@ -11,6 +12,7 @@ env:
 jobs:
   deploy:
     runs-on: [self-hosted, oci, dev]
+    if: github.event.pull_request.merged == true
     steps:
     - name: Log in to Container Registry
       uses: docker/login-action@v3
@@ -47,3 +49,37 @@ jobs:
           docker logs springboot-app
           exit 1
         fi
+        
+    - name: Notify on Success (Discord)
+      if: success()
+      run: |
+        SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+        curl -X POST "${{ secrets.DISCORD_WEBHOOK_URL_CD }}" \
+          -H "Content-Type: application/json" \
+          -d '{
+            "embeds": [{
+              "title": "Deployment Success!",
+              "description": "> Current HEAD [#'$SHORT_SHA'](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) (\`${{ github.base_ref }}\`)",
+              "color": 65280,
+              "fields": [
+                {"name": "🔗 Detail", "value": "[[PR #${{ github.event.number }}](${{ github.event.pull_request.html_url }})] ${{ github.event.pull_request.title }} (`${{ github.base_ref }}` ← `${{ github.head_ref }}`)", "inline": false}
+              ]
+            }]
+          }'
+        
+    - name: Notify on Failure (Discord)
+      if: failure()
+      run: |
+        SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+        curl -X POST "${{ secrets.DISCORD_WEBHOOK_URL_CD }}" \
+          -H "Content-Type: application/json" \
+          -d '{
+            "embeds": [{
+              "title": "Deployment Failed",
+              "description": "> Current HEAD [#'$SHORT_SHA'](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) (\`${{ github.base_ref }}\`)",
+              "color": 16711680,
+              "fields": [
+                {"name": "🔗 Detail", "value": "[[PR #${{ github.event.number }}](${{ github.event.pull_request.html_url }})] ${{ github.event.pull_request.title }} (`${{ github.base_ref }}` ← `${{ github.head_ref }}`)\n[Action #${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})", "inline": false}
+              ]
+            }]
+          }'
