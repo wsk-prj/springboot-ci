@@ -60,10 +60,10 @@ jobs:
           -d '{
             "embeds": [{
               "title": "Deployment Success!",
-              "description": "> Current HEAD [#'$SHORT_SHA'](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) (\`${{ github.base_ref }}\`)",
+              "description": "> Current HEAD [#'$SHORT_SHA'](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) (`${{ github.base_ref }}`)",
               "color": 65280,
               "fields": [
-                {"name": "🔗 Detail", "value": "[[PR #${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})] '"$PR_TITLE"' (\`${{ github.base_ref }}\` ← \`${{ github.head_ref }}\`)", "inline": false}
+                {"name": "🔗 Detail", "value": "[[PR #${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})] (`${{ github.base_ref }}` ← `${{ github.head_ref }}`)", "inline": false}
               ]
             }]
           }'
@@ -71,8 +71,6 @@ jobs:
     - name: Notify on Failure (Discord)
       if: failure()
       run: |
-        SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
-        PR_TITLE=$(echo "${{ github.event.pull_request.title }}" | sed 's/"/\\"/g' | sed 's/\\/\\\\/g')
         curl -X POST "${{ secrets.DISCORD_WEBHOOK_URL_CD }}" \
           -H "Content-Type: application/json" \
           -d '{
@@ -80,7 +78,7 @@ jobs:
               "title": "Deployment Failed",
               "color": 16711680,
               "fields": [
-                {"name": "🔗 Detail", "value": "[[PR #${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})] '"$PR_TITLE"' (\`${{ github.base_ref }}\` ← \`${{ github.head_ref }}\`)\n[Action #${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})", "inline": false}
+                {"name": "🔗 Detail", "value": "[[PR #${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})] (`${{ github.base_ref }}` ← `${{ github.head_ref }}`)\n[Action #${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})", "inline": false}
               ]
             }]
           }'
