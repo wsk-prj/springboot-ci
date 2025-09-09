@@ -58,3 +58,35 @@ jobs:
           ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
         cache-from: type=gha
         cache-to: type=gha,mode=max
+        
+    - name: Notify on Success (Discord)
+      if: success()
+      run: |
+        curl -X POST "${{ secrets.DISCORD_WEBHOOK_URL }}" \
+          -H "Content-Type: application/json" \
+          -d '{
+            "embeds": [{
+              "title": "✅ CI 성공",
+              "description": "**PR #${{ github.event.number }}**: ${{ github.event.pull_request.title }}",
+              "color": 65280,
+              "fields": [
+                {"name": "🔗 PR 링크", "value": "[PR #${{ github.event.number }}](${{ github.event.pull_request.html_url }})", "inline": false}
+              ]
+            }]
+          }'
+        
+    - name: Notify on Failure (Discord)
+      if: failure()
+      run: |
+        curl -X POST "${{ secrets.DISCORD_WEBHOOK_URL }}" \
+          -H "Content-Type: application/json" \
+          -d '{
+            "embeds": [{
+              "title": "❌ CI 실패",
+              "description": "**PR #${{ github.event.number }}**: ${{ github.event.pull_request.title }}",
+              "color": 16711680,
+              "fields": [
+                {"name": "🔗 PR 링크", "value": "[PR #${{ github.event.number }}](${{ github.event.pull_request.html_url }})", "inline": false}
+              ]
+            }]
+          }'
